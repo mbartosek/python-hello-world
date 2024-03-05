@@ -5,11 +5,13 @@ components:
   - name: tools
     container:
       image: quay.io/devfile/universal-developer-image:ubi8-latest
+      memoryLimit: 512Mi
+      mountSources: true
+      command: ["/bin/bash", "-c"]
+      args: ["pip install flake8 black && sleep infinity"]
       volumeMounts:
         - name: venv
           path: /home/user/.venv
-      memoryLimit: 512Mi
-      mountSources: true
   - name: venv
     volume:
       size: 1G
@@ -26,4 +28,3 @@ commands:
       component: tools
       commandLine: "flake8 . && black ."
       workingDir: ${PROJECT_SOURCE}
-
