@@ -10,17 +10,20 @@ components:
           path: /home/user/.venv
       memoryLimit: 512Mi
       mountSources: true
-
   - name: venv
     volume:
       size: 1G
-
 commands:
-  - id: run-application
+  - id: install-lint-format-tools
     exec:
-      label: "Run application"
+      label: "Install Flake8 and Black"
       component: tools
+      commandLine: "pip install flake8 black"
       workingDir: ${PROJECT_SOURCE}
-      commandLine: "python3 hello-world.py"
-      group:
-        kind: run
+  - id: lint-and-format
+    exec:
+      label: "Lint and Format Code"
+      component: tools
+      commandLine: "flake8 . && black ."
+      workingDir: ${PROJECT_SOURCE}
+
